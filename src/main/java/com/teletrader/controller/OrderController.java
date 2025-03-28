@@ -24,9 +24,9 @@ public class OrderController {
 
     // Endpoint za kreiranje novog naloga
     @PostMapping
-    public ResponseEntity<List<Order>> createOrders(@RequestBody List<Order> orders) {
-        List<Order> savedOrders = orderService.createOrders(orders);
-        return new ResponseEntity<>(savedOrders, HttpStatus.CREATED);
+    public ResponseEntity<List<Order>> createOrders(@RequestBody List<OrderDTO> orderRequests) {
+        List<Order> createdOrders = orderService.createOrders(orderRequests);
+        return new ResponseEntity<>(createdOrders, HttpStatus.CREATED);
     }
 
 
