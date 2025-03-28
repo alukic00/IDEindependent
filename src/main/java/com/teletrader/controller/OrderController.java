@@ -24,35 +24,36 @@ public class OrderController {
 
     // Endpoint za kreiranje novog naloga
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        // Validacija osnovnih podataka
-        if (order.getPrice() <= 0) {
-            throw new IllegalArgumentException("Price must be greater than 0");
-        }
-
-        if (order.getAmount() <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than 0");
-        }
-
-        if (!"BUY".equalsIgnoreCase(order.getType()) && !"SELL".equalsIgnoreCase(order.getType())) {
-            throw new IllegalArgumentException("Type must be either 'BUY' or 'SELL'");
-        }
-
-        Order savedOrder = orderService.createOrder(order);
-        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
+    public ResponseEntity<List<Order>> createOrders(@RequestBody List<Order> orders) {
+        List<Order> savedOrders = orderService.createOrders(orders);
+        return new ResponseEntity<>(savedOrders, HttpStatus.CREATED);
     }
 
-    // Endpoint za dobijanje Top 10 Buy naloga
-    @GetMapping("/top10-buy")
-    public ResponseEntity<List<Order>> getTop10BuyOrders() {
-        List<Order> orders = orderService.getTop10BuyOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+
+    @GetMapping("/top-buys")
+    public ResponseEntity<List<Order>> getTop10Buys() {
+        List<Order> topBuys = orderService.getTop10BuyOrders();
+        return ResponseEntity.ok(topBuys);
     }
 
-    // Endpoint za dobijanje Top 10 Sell naloga
-    @GetMapping("/top10-sell")
-    public ResponseEntity<List<Order>> getTop10SellOrders() {
-        List<Order> orders = orderService.getTop10SellOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+    @GetMapping("/top-sells")
+    public ResponseEntity<List<Order>> getTop10Sells() {
+        List<Order> topSells = orderService.getTop10SellOrders();
+        return ResponseEntity.ok(topSells);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+        if (orderService.deleteOrder(id)) {
+            return ResponseEntity.ok().body("Order sa ID " + id + " je uspešno obrisan");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Order sa ID " + id + " nije pronađen");
     }
 }

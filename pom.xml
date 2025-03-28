@@ -69,7 +69,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.32</version> <!-- Kompatibilno sa Spring Boot 3.4.4 -->
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
