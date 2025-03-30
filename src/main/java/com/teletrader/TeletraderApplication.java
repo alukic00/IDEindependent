@@ -12,7 +12,7 @@ public class TeletraderApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(TeletraderApplication.class, args);
-		System.out.println("Moj zivot je propast, ja sam pijanica");
+		System.out.println("Aplikacija je startovala");
 	}
 
 }
