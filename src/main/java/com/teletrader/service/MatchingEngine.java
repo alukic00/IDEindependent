@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,21 +22,31 @@ public class MatchingEngine {
     private TradeRepository tradeRepository;
 
     @Transactional
-    public void matchOrders(Order newOrder) {
-        List<Order> opposingOrders = getOpposingOrders(newOrder);
+    public void matchOrdersWithPriceTimePriority(Order newOrder) {
+        // 1. Dohvati suprotne ordere sa striktnim prioritetom
+        List<Order> opposingOrders = getOpposingOrdersWithPriority(newOrder);
 
+        // 2. Procesiraj redom po prioritetu
         for (Order existingOrder : opposingOrders) {
+            if (newOrder.getAmount() <= 0) break; // Prekid ako je order potpuno ispunjen
+
             if (isMatch(newOrder, existingOrder)) {
                 executeTrade(newOrder, existingOrder);
             }
         }
     }
 
-    private List<Order> getOpposingOrders(Order order) {
-        return order.getType().equals("BUY")
-                ? orderRepository.findMatchingSells(order.getPrice())
-                : orderRepository.findMatchingBuys(order.getPrice());
+    private List<Order> getOpposingOrdersWithPriority(Order order) {
+        return order.getType().equals("BUY") ?
+                // Za BUY: SELL ordere sortirane prvo po ceni (niža=bolja), pa po vremenu (starije=bolje)
+                orderRepository.findByTypeAndStatusAndPriceLessThanEqualOrderByPriceAscCreatedAtAsc(
+                        "SELL", Status.ACTIVE, order.getPrice()) :
+
+                // Za SELL: BUY ordere sortirane prvo po ceni (viša=bolja), pa po vremenu (starije=bolje)
+                orderRepository.findByTypeAndStatusAndPriceGreaterThanEqualOrderByPriceDescCreatedAtAsc(
+                        "BUY", Status.ACTIVE, order.getPrice());
     }
+
 
     private boolean isMatch(Order order1, Order order2) {
         return order1.getType().equals("BUY")
@@ -53,6 +64,7 @@ public class MatchingEngine {
         trade.setSellOrder(newOrder.getType().equals("SELL") ? newOrder : existingOrder);
         trade.setAmount(tradeAmount);
         trade.setPrice(tradePrice);
+        trade.setExecutedAt(new Date().toString());
         tradeRepository.save(trade);
 
         // Ažuriranje ordera

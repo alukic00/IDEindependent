@@ -4,6 +4,7 @@ package com.teletrader.controller;
 import com.teletrader.DTO.OrderDTO;
 import com.teletrader.entity.Order;
 import com.teletrader.service.OrderService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
+@Transactional
 public class OrderController {
 
     private final OrderService orderService;
@@ -40,6 +42,12 @@ public class OrderController {
     public ResponseEntity<List<Order>> getTop10Sells() {
         List<Order> topSells = orderService.getTop10SellOrders();
         return ResponseEntity.ok(topSells);
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<Order>> getActiveOrders() {
+        List<Order> activeOrders = orderService.getActiveOrders();
+        return ResponseEntity.ok(activeOrders);
     }
 
     @GetMapping

@@ -4,14 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.security.Timestamp;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Entity
 @Table(name = "orders")
-@Data // Generiše gettere, settere, toString, equals i hashCode metode
 @NoArgsConstructor // Generiše podrazumevani konstruktor bez argumenata
 @AllArgsConstructor // Generiše konstruktor sa svim poljima
+@Data
 public class Order {
 
     @Id
@@ -24,78 +29,31 @@ public class Order {
     @Column(nullable = false)
     private int amount;
 
+    @Column(nullable = false)
+    private double totalPrice;
+
 
     @Column(nullable = false)
     private String type; // "BUY" ili "SELL"
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt; // Postavlja trenutno vreme
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String createdAt;
+
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Status status; // Podrazumevni status
 
+
+
     @PrePersist
     protected void onCreate() {
-        this.createdAt = new Date();
         this.status = Status.ACTIVE;
+        this.createdAt = LocalDateTime.now()
+                .truncatedTo(ChronoUnit.SECONDS)
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
-
-    public Status getStatus() {
-        return status;
-    }
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    // Setter metode
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    // Dodatno: toString() metoda za bolje logovanje
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", price=" + price +
-                ", amount=" + amount +
-                ", type='" + type + '\'' +
-                '}';
-    }
 
 }

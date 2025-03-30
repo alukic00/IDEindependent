@@ -2,8 +2,9 @@ package com.teletrader.service;
 
 import com.teletrader.DTO.OrderDTO;
 import com.teletrader.entity.Order;
-import com.teletrader.entity.OrderType;
+import com.teletrader.entity.Status;
 import com.teletrader.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderService {
     private final OrderRepository orderRepository;
     private final MatchingEngine matchingEngine;
 
+
     @Autowired
     public OrderService(OrderRepository orderRepository, MatchingEngine matchingEngine) {
         this.orderRepository = orderRepository;
-        this.matchingEngine = matchingEngine; // Injektujte
+        this.matchingEngine = matchingEngine;
     }
 
     public List<Order> getTop10BuyOrders() {
@@ -30,14 +33,18 @@ public class OrderService {
     }
 
     public List<Order> createOrders(List<OrderDTO> orderRequests) {
-        // Konvertujte DTO u Order entitete sa automatskim postavljanjem vremena i statusa
+        // 2. Pronalaženje korisnika
+
+
+        // Konvertuje DTO u Order entitet sa automatskim postavljanjem vremena i statusa
         List<Order> orders = orderRequests.stream()
                 .map(dto -> {
                     Order order = new Order();
                     order.setPrice(dto.getPrice());
                     order.setAmount(dto.getAmount());
                     order.setType(dto.getType());
-                    // createdAt i status će biti postavljeni u @PrePersist
+                    order.setTotalPrice(dto.getPrice()*dto.getAmount());
+                    // createdAt i status su postavljeni u @PrePersist
                     return order;
                 })
                 .collect(Collectors.toList());
@@ -66,6 +73,9 @@ public class OrderService {
         return false;
     }
 
+    public List<Order> getActiveOrders() {
+        return  orderRepository.findByStatus(Status.ACTIVE);
+    }
 
 
 }
