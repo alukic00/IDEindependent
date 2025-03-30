@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,9 @@ public class OrderController {
     }
 
     // Endpoint za kreiranje novog naloga
+
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<Order>> createOrders(@RequestBody List<OrderDTO> orderRequests) {
         List<Order> createdOrders = orderService.createOrders(orderRequests);
         return new ResponseEntity<>(createdOrders, HttpStatus.CREATED);
@@ -56,6 +59,7 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         if (orderService.deleteOrder(id)) {
