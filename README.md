@@ -1,6 +1,12 @@
 # 📦 Sistem za upravljanje porudžbinama  
 
 Ovaj projekat predstavlja **REST API** za upravljanje porudžbinama sa podrškom za **autentifikaciju i autorizaciju**.  
+Korisnici mogu:
+✔️ Registrovati se i prijaviti putem JWT autentifikacije
+✔️ Kreirati, pregledati i brisati porudžbine
+✔️ Dohvatiti listu Top 10 kupovnih i prodajnih porudžbina
+
+Aplikacija koristi Spring Boot, SQLite bazu podataka i JWT za sigurnost.
 
 ## 🛠️ Preduslovi  
 
@@ -17,6 +23,33 @@ Ovaj projekat predstavlja **REST API** za upravljanje porudžbinama sa podrškom
 
 Projekat je već konfigurisan za rad sa **SQLite** bazom podataka.  
 Baza će se automatski kreirati u **`database`** folderu pri prvom pokretanju aplikacije.  
+
+## ⚙️ Kako funkcioniše procesiranje porudžbina?
+## 1️⃣ Kreiranje porudžbine:
+
+Korisnik kreira BUY (kupovnu) ili SELL (prodajnu) porudžbinu putem API-ja.
+
+Porudžbina se odmah čuva u SQLite bazi podataka sa statusom ACTIVE.
+
+## 2️⃣ Sortiranje u knjigu porudžbina (Order Book):
+
+BUY porudžbine se sortiraju opadajuće po ceni (veća cena ima prioritet).
+
+SELL porudžbine se sortiraju rastuće po ceni (niža cena ima prioritet).
+
+## 3️⃣ Izvršenje trgovine (matching engine):
+
+Kada stigne nova BUY porudžbina, ona se uparuje sa najjeftinijom dostupnom SELL porudžbinom.
+
+Kada stigne nova SELL porudžbina, ona se uparuje sa najskupljom dostupnom BUY porudžbinom.
+
+Ako postoji dovoljno likvidnosti, porudžbina se odmah zatvara i označava kao COMPLETED.
+
+Ako nije u potpunosti izvršena, deo porudžbine ostaje otvoren u knjizi.
+
+## 4️⃣ Dohvatanje podataka:
+
+Korisnici mogu tražiti Top 10 kupovnih i prodajnih porudžbina kako bi videli tržišne trendove.
 
 ## 🚀 Pokretanje aplikacije  
 
