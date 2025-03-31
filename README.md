@@ -74,13 +74,11 @@ Authorization: Bearer <token> (zamenite <token> sa dobijenim JWT tokenom priliko
 Body (raw JSON):
 
 [
-
     {
         "price": 155.75,
         "amount": 5,
         "type": "BUY"
-    }
-    
+    } 
 ]
 
 2. Dohvatanje svih porudžbina
