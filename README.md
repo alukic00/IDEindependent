@@ -36,10 +36,10 @@ Aplikacija će biti dostupna na: http://localhost:8080
   - `Content-Type: application/json`
 - **Body (raw JSON):**
 ##json:
+
 {
     "username": "testuser",
     "password": "testpassword"
-
 }
 
 2. Prijava korisnika
@@ -48,10 +48,10 @@ URL: http://localhost:8080/auth/login
 Headers:
 Content-Type: application/json
 Body (raw JSON):
+
 {
     "username": "testuser",
     "password": "testpassword"
-
 }
 
 Odgovor: JWT token koji se koristi u ostalim zahtevima
@@ -79,6 +79,7 @@ Body (raw JSON):
         "amount": 5,
         "type": "BUY"
     } 
+    
 ]
 
 2. Dohvatanje svih porudžbina
