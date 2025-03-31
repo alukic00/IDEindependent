@@ -25,4 +25,11 @@ public class AuthController {
         String token = authService.login(request.get("username"), request.get("password"));
         return ResponseEntity.ok(token);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        authService.logout(token);
+        return ResponseEntity.ok("Logged out successfully");
+    }
 }

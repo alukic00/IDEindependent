@@ -23,10 +23,9 @@ public class MatchingEngine {
 
     @Transactional
     public void matchOrdersWithPriceTimePriority(Order newOrder) {
-        // 1. Dohvati suprotne ordere sa striktnim prioritetom
+
         List<Order> opposingOrders = getOpposingOrdersWithPriority(newOrder);
 
-        // 2. Procesiraj redom po prioritetu
         for (Order existingOrder : opposingOrders) {
             if (newOrder.getAmount() <= 0) break; // Prekid ako je order potpuno ispunjen
 
@@ -56,8 +55,7 @@ public class MatchingEngine {
 
     private void executeTrade(Order newOrder, Order existingOrder) {
         int tradeAmount = Math.min(newOrder.getAmount(), existingOrder.getAmount());
-        double tradePrice = existingOrder.getPrice(); // Ili neka druga logika za cenu
-
+        double tradePrice = existingOrder.getPrice();
         // Kreiranje trade-a
         Trade trade = new Trade();
         trade.setBuyOrder(newOrder.getType().equals("BUY") ? newOrder : existingOrder);
@@ -67,7 +65,7 @@ public class MatchingEngine {
         trade.setExecutedAt(new Date().toString());
         tradeRepository.save(trade);
 
-        // Ažuriranje ordera
+
         updateOrderAmounts(newOrder, existingOrder, tradeAmount);
     }
 

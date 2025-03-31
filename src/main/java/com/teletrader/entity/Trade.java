@@ -3,9 +3,6 @@ package com.teletrader.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @Entity
 @Data
 public class Trade {

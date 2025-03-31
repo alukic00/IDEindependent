@@ -5,6 +5,7 @@ import com.teletrader.entity.Role;
 import com.teletrader.repository.UserRepository;
 import com.teletrader.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,15 @@ public class AuthService {
         }
 
         return jwtUtil.generateToken(user.getUsername(), user.getRole());
+    }
+
+    public void logout(String token) {
+        if (!jwtUtil.validateToken(token)) {
+            throw new RuntimeException("Invalid token");
+        }
+
+        SecurityContextHolder.clearContext();
+        jwtUtil.invalidateToken(token);
+
     }
 }

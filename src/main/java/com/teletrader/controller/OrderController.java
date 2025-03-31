@@ -25,7 +25,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    // Endpoint za kreiranje novog naloga
+
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")

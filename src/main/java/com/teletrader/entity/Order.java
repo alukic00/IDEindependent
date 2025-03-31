@@ -2,20 +2,16 @@ package com.teletrader.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.Instant;
+;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "orders")
-@NoArgsConstructor // Generiše podrazumevani konstruktor bez argumenata
-@AllArgsConstructor // Generiše konstruktor sa svim poljima
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Order {
 
@@ -43,7 +39,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Status status; // Podrazumevni status
+    private Status status;
 
 
 

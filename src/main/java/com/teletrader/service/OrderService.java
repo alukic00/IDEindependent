@@ -33,9 +33,6 @@ public class OrderService {
     }
 
     public List<Order> createOrders(List<OrderDTO> orderRequests) {
-        // 2. Pronalaženje korisnika
-
-
         // Konvertuje DTO u Order entitet sa automatskim postavljanjem vremena i statusa
         List<Order> orders = orderRequests.stream()
                 .map(dto -> {
@@ -72,10 +69,8 @@ public class OrderService {
         }
         return false;
     }
-
     public List<Order> getActiveOrders() {
         return  orderRepository.findByStatus(Status.ACTIVE);
     }
-
 
 }
