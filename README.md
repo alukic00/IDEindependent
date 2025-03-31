@@ -35,20 +35,20 @@ Aplikacija će biti dostupna na: http://localhost:8080
 - **Headers:**
   - `Content-Type: application/json`
 - **Body (raw JSON):**
-##json:
-
+  **json**
 {
     "username": "testuser",
     "password": "testpassword"
 }
 
-2. Prijava korisnika
-Metoda: POST
-URL: http://localhost:8080/auth/login
-Headers:
-Content-Type: application/json
-Body (raw JSON):
 
+### 2. Prijava korisnika
+- **Metoda**: POST
+- **URL**: http://localhost:8080/auth/login
+- **Headers:**
+  - `Content-Type: application/json`
+- **Body (raw JSON):**
+  **json**
 {
     "username": "testuser",
     "password": "testpassword"
@@ -56,20 +56,21 @@ Body (raw JSON):
 
 Odgovor: JWT token koji se koristi u ostalim zahtevima
 
-3. Odjava korisnika
-Metoda: POST
-URL: http://localhost:8080/auth/logout
-Headers:
-Authorization: Bearer <token> (zamenite <token> sa dobijenim JWT tokenom prilikom login-a)
-Content-Type: application/json
+### 3. Odjava korisnika
+- **Metoda**: POST
+- **URL**: http://localhost:8080/auth/logout
+- **Headers:**
+  - `Authorization: Bearer <token> (zamenite <token> sa dobijenim JWT tokenom prilikom login-a)
+Content-Type: application/json`
+
 
 Upravljanje porudžbinama
-1. Kreiranje porudžbina (lista) (SAMO AUTORIZOVANIM KORISNICIMA JE OMOGUCEN PRISTUP)
-Metoda: POST
-URL: http://localhost:8080/orders
-Headers:
-Content-Type: application/json
-Authorization: Bearer <token> (zamenite <token> sa dobijenim JWT tokenom prilikom login-a)
+### 1. Kreiranje porudžbina (lista) (SAMO AUTORIZOVANIM KORISNICIMA JE OMOGUCEN PRISTUP)
+- **Metoda**: POST
+- **URL**: http://localhost:8080/orders
+- **Headers:**
+  - `Authorization: Bearer <token> (zamenite <token> sa dobijenim JWT tokenom prilikom login-a)
+Content-Type: application/json`
 
 Body (raw JSON):
 
@@ -82,28 +83,30 @@ Body (raw JSON):
     
 ]
 
-2. Dohvatanje svih porudžbina
-Metoda: GET
-URL: http://localhost:8080/orders
-Headers: (nema potrebnih headersa)
+### 2. Dohvatanje svih porudžbina
+- **Metoda**: GET
+- **URL**: http://localhost:8080/orders
+- **Headers:**
+Nema potrebnih Headers-a
 
 3. Dohvatanje top 10 kupovnih porudžbina
-Metoda: GET
-URL: http://localhost:8080/orders/top-buys
+- **Metoda**: GET
+- **URL**: http://localhost:8080/orders/top-buys
 
 4. Dohvatanje top 10 prodajnih porudžbina
-Metoda: GET
-URL: http://localhost:8080/orders/top-sells
+- **Metoda**: GET
+- **URL**: http://localhost:8080/orders/top-sells
 
 5. Dohvatanje aktivnih porudžbina
-Metoda: GET
-URL: http://localhost:8080/orders/active
+- **Metoda**: GET
+- **URL**: http://localhost:8080/orders/active
 
-6. Brisanje porudžbine  (SAMO AUTORIZOVANIM KORISNICIMA JE OMOGUCEN PRISTUP)
-Metoda: DELETE
-URL: http://localhost:8080/orders/{id}
-Headers:
-Authorization: Bearer <token> (zamenite <token> sa dobijenim JWT tokenom prilikom login-a)
+### 6. Brisanje porudžbine  (SAMO AUTORIZOVANIM KORISNICIMA JE OMOGUCEN PRISTUP)
+- **Metoda**: DELETE
+- **URL**: http://localhost:8080/orders/{id}
+- **Headers:**
+  - `Authorization: Bearer <token> (zamenite <token> sa dobijenim JWT tokenom prilikom login-a)
+Content-Type: application/json`
 Primer: http://localhost:8080/orders/1
 
 ### Dodatne napomene:
